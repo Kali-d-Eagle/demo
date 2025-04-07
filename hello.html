@@ -17,7 +17,15 @@
     </style>
 </head>
 <body>
-    <script type="module">
+    <script type="module" , "importmap">
+
+
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js",
+        "three/examples/jsm/controls/OrbitControls.js": "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js"
+    }
+
+
         import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
         import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
         // DON'T use the CDN URL in npm projects
