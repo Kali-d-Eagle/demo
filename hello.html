@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Emoji Sphere with OrbitControls</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <script type="module">
+        // import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
+        // import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
+        // DON'T use the CDN URL in npm projects
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Orbit Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 8;
+        controls.maxDistance = 20;
+
+        // Create a group to hold all emojis (this will rotate)
+        const sphereGroup = new THREE.Group();
+        scene.add(sphereGroup);
+
+        // Emoji sets (categorized)
+        const emojiSets = [
+            ["🌳", "🌻", "🌊", "🌞", "🍂", "🌈", "🍀", "🌵", "🍎", "🌹"],
+            ["🚀", "🌌", "🛰️", "🪐", "🌍", "🌟", "🌕", "☄️", "🛸", "🧑‍🚀"],
+            ["😂", "😍", "😎", "😭", "😡", "😱", "🤩", "🥺", "😜", "🤯"],
+            ["🎸", "🎨", "🎭", "🎮", "🎵", "🎬", "📸", "🎤", "🎻", "🎷"],
+            ["🤖", "👽", "🎩", "🦸‍♂️", "🕶️", "💀", "🦾", "🦿", "🛠️", "🕹️"]
+        ];
+
+        let currentEmojiSetIndex = 0;
+
+        // Function to get a shuffled list of emojis
+        const getShuffledEmojis = (emojiList) => {
+            let shuffled = [...emojiList].sort(() => Math.random() - 0.5);
+            for (let i = 1; i < shuffled.length; i++) {
+                if (shuffled[i] === shuffled[i - 1]) {
+                    let swapIndex = (i + 1) % shuffled.length;
+                    [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
+                }
+            }
+            return shuffled;
+        };
+
+        // Function to create a sprite from emoji text
+        const createTextSprite = (text) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 128;
+            canvas.height = 128;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "bold 50px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            return texture;
+        };
+
+        // Create a wireframe sphere for emoji positions
+        const sphereGeometry = new THREE.SphereGeometry(5, 15, 15);
+        const positions = sphereGeometry.attributes.position.array;
+        const uniquePositions = new Set();
+        const textSprites = [];
+
+        // Add emojis at unique positions
+        const createEmojiSphere = () => {
+            const shuffledEmojis = getShuffledEmojis(emojiSets[currentEmojiSetIndex]);
+            let emojiIndex = 0;
+
+            for (let i = 0; i < positions.length; i += 3) {
+                const x = positions[i].toFixed(2);
+                const y = positions[i + 1].toFixed(2);
+                const z = positions[i + 2].toFixed(2);
+                const key = `${x},${y},${z}`;
+
+                if (!uniquePositions.has(key)) {
+                    uniquePositions.add(key);
+
+                    const emoji = shuffledEmojis[emojiIndex % shuffledEmojis.length];
+                    emojiIndex++;
+
+                    const texture = createTextSprite(emoji);
+                    const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+                    const sprite = new THREE.Sprite(material);
+                    sprite.position.set(parseFloat(x), parseFloat(y), parseFloat(z));
+
+                    textSprites.push({ sprite, material });
+                    sphereGroup.add(sprite);
+                }
+            }
+        };
+
+        createEmojiSphere(); // Initial emoji load
+
+        // Change emoji set every 4 seconds
+        setInterval(() => {
+            currentEmojiSetIndex = (currentEmojiSetIndex + 1) % emojiSets.length;
+            const shuffledEmojis = getShuffledEmojis(emojiSets[currentEmojiSetIndex]);
+            let emojiIndex = 0;
+
+            textSprites.forEach((obj) => {
+                const newEmoji = shuffledEmojis[emojiIndex % shuffledEmojis.length];
+                emojiIndex++;
+
+                obj.material.map.dispose(); // Free old texture
+                obj.material.map = createTextSprite(newEmoji);
+                obj.material.map.needsUpdate = true;
+            });
+        }, 4000);
+
+        // Set camera position
+        camera.position.z = 12;
+
+        // Animate loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            sphereGroup.rotation.y += 0.005;
+            sphereGroup.rotation.x += 0.002;
+            controls.update(); // <- important for damping and interaction
+            renderer.render(scene, camera);
+        };
+
+        animate();
+
+        // Handle resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
