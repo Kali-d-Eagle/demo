@@ -1,46 +1,222 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rotating Emoji Sphere with OrbitControls</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
-        }
-    </style>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Toggle Dark/Light Mode</title>
+   <style>
+      /* Default Dark Mode */
+      body.dark-mode {
+          background-color: #161616;
+          color: white;
+          transition: background 1.6s ease-in-out, color 1.6s ease-in-out;
+      }
+
+      .msg {
+          font-size: 70px;
+          font-weight: 900;
+          text-align: center;
+          background: linear-gradient(to right , red , blue);
+          color: transparent;
+          -webkit-background-clip: text;
+          text-shadow: 0 0 70px rgba(255,0,0,0.457);
+          animation: msg_anime 1.6s infinite alternate;
+      }
+
+      @keyframes msg_anime {
+          100%{
+              text-shadow: 0 0 70px rgba(10, 2, 104, 0.457);
+          }
+      }
+
+      .img_txt {
+          font-size: 70px;
+          font-weight: 900;
+          text-align: center;
+          background: linear-gradient(to right , rgb(236, 5, 105) , rgb(203, 184, 184));
+          color: transparent;
+          -webkit-background-clip: text;
+          text-shadow: 0 0 70px rgba(255,0,0,0.457);
+          animation: msg_anime 1.6s infinite alternate;
+      }
+
+      /* Light Mode */
+      body.light-mode {
+          background-color: #f5f5f5;
+          color: black;
+          transition: background 1.6s ease-in-out, color 1.6s ease-in-out;
+      }
+
+      /* Main Button */
+      .btn {
+          margin: 100px;
+          padding: 15px 40px;
+          border: none;
+          outline: none;
+          color: #FFF;
+          cursor: pointer;
+          position: relative;
+          z-index: 0;
+          border-radius: 12px;
+      }
+
+      .btn::after {
+          content: "";
+          z-index: -1;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: #333;
+          left: 0;
+          top: 0;
+          border-radius: 10px;
+      }
+
+      /* Glow Effect */
+      .btn::before {
+          content: "";
+          background: linear-gradient(45deg, 
+            #FF0000, #FF7300, #FFFB00, #48FF00,
+            #00FFD5, #002BFF, #FF00C8, #FF0000
+          );
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          background-size: 600%;
+          z-index: -1;
+          width: calc(100% + 4px);
+          height:  calc(100% + 4px);
+          filter: blur(8px);
+          animation: glowing 20s linear infinite;
+          transition: opacity .3s ease-in-out;
+          border-radius: 10px;
+          opacity: 0;
+      }
+
+      @keyframes glowing {
+          0% {background-position: 0 0;}
+          50% {background-position: 400% 0;}
+          100% {background-position: 0 0;}
+      }
+
+      .btn:hover::before {
+          opacity: 1;
+      }
+
+      .btn:active:after {
+          background: transparent;
+      }
+
+      .btn:active {
+          color: #000;
+          font-weight: bold;
+      }
+
+      /* Centering the main button at the bottom */
+      #button {
+          position: absolute;
+          bottom: 100px;
+          left: 50%;
+          transform: translateX(-50%);
+      }
+
+      /* Toggle Button */
+      #toggle-container {
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+      }
+
+      #toggle-btn {
+        padding: 15px 40px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        background: linear-gradient(90deg, #ff0080, #8000ff, #00e1ff);
+        color: white;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        overflow: hidden;
+        transform-origin: center;
+      }
+
+      .crazy-flip {
+        animation: flip 0.6s ease-in-out;
+      }
+
+      @keyframes flip {
+        0% { transform: rotateY(0); }
+        50% { transform: rotateY(180deg); }
+        100% { transform: rotateY(360deg); }
+      }
+
+      #toggle-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 40px rgba(0, 255, 255, 1);
+      }
+
+      /* Light Mode Styling */
+      .light-mode #toggle-btn {
+        background: linear-gradient(90deg, #ffcc00, #ff5500, #ff0077);
+        color: black;
+        box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+      }
+
+      .light-mode #toggle-btn:hover {
+        box-shadow: 0 0 30px rgba(255, 255, 0, 1), 0 0 50px rgba(255, 0, 102, 1);
+      }
+   </style>
 </head>
-<body>
+<body class="dark-mode" oncontextmenu="return false">
+    <div class="msg">
+        <h1>Welcome </h1>
+    </div>
+    <div class="img_txt">
+        <h1>AKASH</h1>
+    </div>
+
+    <!-- Main Button with Glow Effect -->
+    <div id="button"> 
+        <button class="btn">Hover Me!</button>
+    </div>
+
+    <!-- Toggle Button -->
+    <div id="toggle-container">
+        <button id="toggle-btn">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Sphere -->
+    <div id="Sphere_Container"></div>
+
     <script type="module">
         import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
-        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
 
-        // Scene setup
+        const sphere = document.getElementById("Sphere_Container");
+        Object.assign(sphere.style, {
+            position: "absolute",
+            bottom: "30px",
+            left: "30px",
+            width: "200px",
+            height: "200px",
+            zIndex: "0",
+            pointerEvents: "auto" // Enable click events
+        });
+
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        renderer.setSize(200, 200);
+        sphere.appendChild(renderer.domElement);
 
-        // Orbit Controls
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.minDistance = 8;
-        controls.maxDistance = 20;
-
-        // Create a group to hold all emojis (this will rotate)
         const sphereGroup = new THREE.Group();
         scene.add(sphereGroup);
 
-        // Emoji sets (categorized)
         const emojiSets = [
             ["🌳", "🌻", "🌊", "🌞", "🍂", "🌈", "🍀", "🌵", "🍎", "🌹"],
             ["🚀", "🌌", "🛰️", "🪐", "🌍", "🌟", "🌕", "☄️", "🛸", "🧑‍🚀"],
@@ -51,7 +227,6 @@
 
         let currentEmojiSetIndex = 0;
 
-        // Function to get a shuffled list of emojis
         const getShuffledEmojis = (emojiList) => {
             let shuffled = [...emojiList].sort(() => Math.random() - 0.5);
             for (let i = 1; i < shuffled.length; i++) {
@@ -63,30 +238,25 @@
             return shuffled;
         };
 
-        // Function to create a sprite from emoji text
         const createTextSprite = (text) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = 128;
             canvas.height = 128;
-
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.font = "bold 50px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-
             const texture = new THREE.CanvasTexture(canvas);
             return texture;
         };
 
-        // Create a wireframe sphere for emoji positions
         const sphereGeometry = new THREE.SphereGeometry(5, 15, 15);
         const positions = sphereGeometry.attributes.position.array;
         const uniquePositions = new Set();
         const textSprites = [];
 
-        // Add emojis at unique positions
         const createEmojiSphere = () => {
             const shuffledEmojis = getShuffledEmojis(emojiSets[currentEmojiSetIndex]);
             let emojiIndex = 0;
@@ -99,7 +269,6 @@
 
                 if (!uniquePositions.has(key)) {
                     uniquePositions.add(key);
-
                     const emoji = shuffledEmojis[emojiIndex % shuffledEmojis.length];
                     emojiIndex++;
 
@@ -114,9 +283,8 @@
             }
         };
 
-        createEmojiSphere(); // Initial emoji load
+        createEmojiSphere();
 
-        // Change emoji set every 4 seconds
         setInterval(() => {
             currentEmojiSetIndex = (currentEmojiSetIndex + 1) % emojiSets.length;
             const shuffledEmojis = getShuffledEmojis(emojiSets[currentEmojiSetIndex]);
@@ -126,44 +294,52 @@
                 const newEmoji = shuffledEmojis[emojiIndex % shuffledEmojis.length];
                 emojiIndex++;
 
-                obj.material.map.dispose(); // Free old texture
+                obj.material.map.dispose();
                 obj.material.map = createTextSprite(newEmoji);
                 obj.material.map.needsUpdate = true;
             });
         }, 4000);
 
-        // Set camera position
         camera.position.z = 12;
 
-        // Animate loop
         const animate = () => {
             requestAnimationFrame(animate);
             sphereGroup.rotation.y += 0.005;
             sphereGroup.rotation.x += 0.002;
-            controls.update(); // <- important for damping and interaction
             renderer.render(scene, camera);
         };
 
         animate();
 
-        // Handle resizing
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        // Dark/Light Mode Toggle
+        const toggleBtn = document.getElementById("toggle-btn");
+        const body = document.body;
+
+        toggleBtn.addEventListener("click", () => {
+            body.classList.toggle("light-mode");
+            body.classList.toggle("dark-mode");
+
+            toggleBtn.classList.add("crazy-flip");
+            setTimeout(() => toggleBtn.classList.remove("crazy-flip"), 600);
+
+            toggleBtn.innerHTML = body.classList.contains("light-mode") ? "🌞 Light Mode" : "🌙 Dark Mode";
+        });
+
+        // Double-click on sphere to redirect
+        let clickCount = 0;
+        let clickTimeout;
+
+        sphere.addEventListener("click", () => {
+            clickCount++;
+            if (clickCount === 2) {
+                clearTimeout(clickTimeout);
+                window.location.href = "hello.html";
+            } else {
+                clickTimeout = setTimeout(() => {
+                    clickCount = 0;
+                }, 400);
+            }
         });
     </script>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>AKASH....!!!!</h1>
 </body>
 </html>
