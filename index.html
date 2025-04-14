@@ -402,6 +402,16 @@
             currentAngle = angle;
           }
           const rotateTransform = `rotate(${currentAngle}deg)`;
+
+           // --- ✨ Dynamic Border Styling --- //
+
+          // Speed-based border thickness (1px to 6px)
+          const dynamicBorder = 1 + (mouseVelocity / 150) * 5; 
+          circleElement.style["border-width"] = `${dynamicBorder}px`;
+
+          // Angle-based border color (Hue shifts with direction)
+          const hue = (currentAngle + 360) % 360; // Normalize to 0-360
+          circleElement.style["border-color"] = `hsl(${hue}, 100%, 50%)`;
   
           circleElement.style.transform = `${translateTransform} ${rotateTransform} ${scaleTransform}`;
           window.requestAnimationFrame(tick);
