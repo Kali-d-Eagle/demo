@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rotating Emoji Wireframe Sphere</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: black;
+    }
+
+    #controlPanel {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      font-size: 14px;
+      z-index: 1;
+      animation: glow-pulse 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow-pulse {
+      0% {
+        box-shadow: 0 0 10px rgba(0,255,200,0.2);
+      }
+      100% {
+        box-shadow: 0 0 20px rgba(0,255,200,0.4);
+      }
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      /* text-shadow: 0 0 4px #00ffc3, 0 0 8px rgba(0,255,195,0.6); */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .form-group label {
+      background: linear-gradient(90deg, #00fff2, #ff00f2); 
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+      letter-spacing: 0.5px;
+    }
+
+    /* Toggle Switch Style - Upgraded */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 32px;
+      filter: drop-shadow(0 0 6px rgba(0, 255, 204, 0.5));
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+      transition: 0.4s;
+      border-radius: 40px;
+      border: 1px solid #00ffc3;
+      box-shadow: inset 0 0 6px #00ffc3;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 24px;
+      width: 24px;
+      left: 4px;
+      bottom: 4px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #ccc);
+      transition: 0.4s;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255,255,255,0.8);
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(90deg, #00ffc3, #ff00f7);
+      box-shadow: 0 0 12px #00ffc3;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(28px);
+      background: radial-gradient(circle at 30% 30%, #ffffff, #00ffc3);
+      box-shadow: 0 0 18px #00ffc3;
+    }
+
+    /* Color Picker Style */
+    #colorPicker {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    #colorPicker:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    #colorPicker::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    #colorPicker::-webkit-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+
+    #colorPicker::-moz-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+
+    #colorPicker {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- UI Panel -->
+
+  <div id="controlPanel">
+    <div class="form-group">
+      <label for="wireframeToggle">✨ Wireframe Magic</label>
+      <label class="switch">
+        <input type="checkbox" id="wireframeToggle" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="colorPicker">🎨 Color:</label>
+      <input type="color" id="colorPicker" value="#ffffff"/>
+    </div>
+  </div>
+
+  <!-- Three.js Script -->
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const sphereGroup = new THREE.Group();
+    scene.add(sphereGroup);
+
+    const sphereGeometry = new THREE.SphereGeometry(5, 32, 24);
+    const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+    const wireframe = new THREE.WireframeGeometry(sphereGeometry);
+    const lineSegments = new THREE.LineSegments(wireframe, wireframeMaterial);
+    sphereGroup.add(lineSegments);
+
+    const createTextSprite = (text) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 128;
+      canvas.height = 128;
+
+      ctx.font = "bold 50px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+
+      return new THREE.Sprite(material);
+    };
+
+    const emojis = ["🌟", "🔥", "💎", "🚀", "🎵", "❤️", "🌍", "⚡", "🍀", "☀️", "❄️", "🌈", "🎨", "💡", "👽", "🤖", "🎭", "💀"];
+    const getRandomEmoji = (lastEmoji) => {
+      let emoji;
+      do {
+        emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      } while (emoji === lastEmoji);
+      return emoji;
+    };
+
+    const positions = wireframe.attributes.position.array;
+    const uniquePositions = new Set();
+    let lastEmoji = null;
+
+    for (let i = 0; i < positions.length; i += 3) {
+      const x = positions[i].toFixed(2);
+      const y = positions[i + 1].toFixed(2);
+      const z = positions[i + 2].toFixed(2);
+      const key = `${x},${y},${z}`;
+
+      if (!uniquePositions.has(key)) {
+        uniquePositions.add(key);
+        const emoji = getRandomEmoji(lastEmoji);
+        lastEmoji = emoji;
+        const sprite = createTextSprite(emoji);
+        sprite.position.set(parseFloat(x), parseFloat(y), parseFloat(z));
+        sphereGroup.add(sprite);
+      }
+    }
+
+    camera.position.z = 12;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      sphereGroup.rotation.y += 0.005;
+      sphereGroup.rotation.x += 0.0025;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const wireframeToggle = document.getElementById('wireframeToggle');
+    const colorPicker = document.getElementById('colorPicker');
+
+    const updateWireframeVisibility = () => {
+      lineSegments.visible = wireframeToggle.checked;
+      colorPicker.style.display = wireframeToggle.checked ? 'block' : 'none';
+    };
+
+    wireframeToggle.addEventListener('change', updateWireframeVisibility);
+    colorPicker.addEventListener('input', () => {
+      wireframeMaterial.color.set(colorPicker.value);
+    });
+
+    updateWireframeVisibility();
+  </script>
+</body>
+</html>
+
+
