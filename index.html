@@ -240,7 +240,7 @@
         }
     </style>
     
-    <script type="importmap">
+<!--     <script type="importmap">
         {
                   "imports": {
                       "three": "https://cdn.jsdelivr.net/npm/three@0.161/build/three.module.js",
@@ -249,7 +249,18 @@
               }
   
   
-      </script>
+      </script> -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js",
+        "three/examples/jsm/controls/OrbitControls.js": "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js",
+        "three/examples/jsm/loaders/OBJLoader.js": "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/OBJLoader.js"
+      }
+    }
+  </script>
+
+    
     
     
 </head>
@@ -498,13 +509,21 @@
 
     <!-- myMandala -->
     <script type="module">
-        import * as THREE from "three";
+        // import * as THREE from "three";
         // import { OrbitControls } from 'jsm/controls/OrbitControls.js';
-        import { OrbitControls } from 'jsm/controls/OrbitControls.js';
-        import { OBJLoader } from "jsm/loaders/OBJLoader.js";
+        // import { OrbitControls } from 'jsm/controls/OrbitControls.js';
+        
+        // import { OBJLoader } from "jsm/loaders/OBJLoader.js";
+
+        
         // import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
         // import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
         // import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/OBJLoader.js';
+
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+        import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+        
 
 
         const mw = window.innerWidth;
