@@ -1,4 +1,4 @@
-
+<!-- AiE! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +6,8 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Toggle Dark/Light Mode</title>
+   <script src="https://cdn.rawgit.com/bradley/Blotter/master/build/blotter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Blotter/0.1.0/materials/channelSplitMaterial.min.js"></script>
    <style>
       
     /* Default Dark Mode */
@@ -32,15 +34,10 @@
         }
     }
 
-    .img_txt {
-        font-size: 70px;
-        font-weight: 900;
-        text-align: center;
-        background: linear-gradient(to right , rgb(236, 5, 105) , rgb(203, 184, 184));
-        color: transparent;
-        -webkit-background-clip: text;
-        text-shadow: 0 0 70px rgba(255,0,0,0.457);
-        animation: msg_anime 1.6s infinite alternate;
+    #img_txt {
+            /* font-size: 70px; */
+            /* font-weight: 900; */
+            text-align: center;
     }
 
     /* Light Mode */
@@ -123,55 +120,6 @@
         transform: translateX(-50%);
     }
 
-    /* Toggle Button */
-    #toggle-container {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #toggle-btn {
-      padding: 15px 40px;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      background: linear-gradient(90deg, #ff0080, #8000ff, #00e1ff);
-      color: white;
-      box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
-      transition: all 0.3s ease-in-out;
-      position: relative;
-      overflow: hidden;
-      transform-origin: center;
-    }
-
-    .crazy-flip {
-      animation: flip 0.6s ease-in-out;
-    }
-
-    @keyframes flip {
-      0% { transform: rotateY(0); }
-      50% { transform: rotateY(180deg); }
-      100% { transform: rotateY(360deg); }
-    }
-
-    #toggle-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 40px rgba(0, 255, 255, 1);
-    }
-
-    /* Light Mode Styling */
-    .light-mode #toggle-btn {
-      background: linear-gradient(90deg, #ffcc00, #ff5500, #ff0077);
-      color: black;
-      box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
-    }
-
-    .light-mode #toggle-btn:hover {
-      box-shadow: 0 0 30px rgba(255, 255, 0, 1), 0 0 50px rgba(255, 0, 102, 1);
-    }
     
     .circle {
       --circle-size: 40px;
@@ -263,10 +211,10 @@
     <div class="msg">
         <h1>Welcome </h1>
     </div>
-    <div class="img_txt">
-        <h1>AKASH</h1>
+    <div id="img_txt"></div>
+    <div id="img_txt2">
+        <!-- <h1>ANUSH</h1> -->
     </div>
-
     <!-- Main Button with Glow Effect -->
 
     <div id="button"> 
@@ -275,9 +223,6 @@
 
     <!-- Toggle Button -->
 
-    <div id="toggle-container">
-        <button id="toggle-btn">🌙 Dark Mode</button>
-    </div>
 
     <!-- Sphere L -->
     <div id="Sphere_Container"></div>
@@ -407,21 +352,7 @@
 
         animate();
 
-        // Dark/Light Mode Toggle
-        const toggleBtn = document.getElementById("toggle-btn");
-        const body = document.body;
-
-        toggleBtn.addEventListener("click", () => {
-            body.classList.toggle("light-mode");
-            body.classList.toggle("dark-mode");
-
-            toggleBtn.classList.add("crazy-flip");
-            setTimeout(() => toggleBtn.classList.remove("crazy-flip"), 600);
-
-            toggleBtn.innerHTML = "🌙 Dark Mode";
-            toggleBtn.innerHTML = body.classList.contains("light-mode") ? "🌞 Light Mode" : "🌙 Dark Mode";
         
-        });
 
         // Double-click on sphere to redirect
         let clickCount = 0;
@@ -441,6 +372,66 @@
             }
         });
     </script>
+
+
+    <!-- img_txt2 -->
+   
+<script>
+    const container = document.getElementById("img_txt");
+
+    const text = new Blotter.Text("CODEGRID", {
+        family: "serif",
+        size: 70,
+        fill: "#000",
+        paddingLeft: 100,
+        paddingRight: 80,
+        paddingTop: 40,
+        paddingBottom: 120
+    });
+
+    const material = new Blotter.ChannelSplitMaterial();
+    material.uniforms.uOffset.value = 0.05;
+    material.uniforms.uRotation.value = 50;
+    material.uniforms.uApplyBlur.value = 1;
+    material.uniforms.uAnimateNoise.value = 0.3;
+
+    const blotter = new Blotter(material, { texts: text });
+    const scope = blotter.forText(text);
+    scope.appendTo(container);
+
+    // --- Smooth mouse movement ---
+    let targetRotation = 50;
+    let targetOffset = 0.05;
+
+    let currentRotation = 50;
+    let currentOffset = 0.05;
+
+    const maxRotation = 160;
+    const maxOffset = 0.04;
+
+    document.onmousemove = function (event) {
+        const percentX = event.clientX / window.innerWidth;
+        const percentY = event.clientY / window.innerHeight;
+
+        // Map mouse position to effect ranges
+        targetRotation = percentX * maxRotation;
+        targetOffset = percentY * maxOffset;
+    };
+
+    function animate() {
+        // Lerp toward target values
+        currentRotation += (targetRotation - currentRotation) * 0.1;
+        currentOffset += (targetOffset - currentOffset) * 0.1;
+
+        material.uniforms.uRotation.value = currentRotation;
+        material.uniforms.uOffset.value = currentOffset;
+
+        requestAnimationFrame(animate);
+    }
+
+    animate(); // start the animation loop
+</script>
+
 
     <!-- Sphere R -->
     <script type="module">
@@ -561,7 +552,7 @@
     });
     </script>
 
-
+   
 
 
    <script>
