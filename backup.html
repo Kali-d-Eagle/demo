@@ -1,215 +1,264 @@
-<!-- AiE! -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Toggle Dark/Light Mode</title>
-   <script src="https://cdn.rawgit.com/bradley/Blotter/master/build/blotter.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toggle</title>
+    <script src="https://cdn.rawgit.com/bradley/Blotter/master/build/blotter.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Blotter/0.1.0/materials/channelSplitMaterial.min.js"></script>
-   <style>
-      
-    /* Default Dark Mode */
-    body.dark-mode {
-        background-color: #161616;
-        color: white;
-        transition: background 1.6s ease-in-out, color 1.6s ease-in-out;
-    }
 
-    .msg {
-        font-size: 70px;
-        font-weight: 900;
-        text-align: center;
-        background: linear-gradient(to right , red , blue);
-        color: transparent;
-        -webkit-background-clip: text;
-        text-shadow: 0 0 70px rgba(255,0,0,0.457);
-        animation: msg_anime 1.6s infinite alternate;
-    }
-
-    @keyframes msg_anime {
-        100%{
-            text-shadow: 0 0 70px rgba(10, 2, 104, 0.457);
+    <style>
+        /* Default Dark Mode */
+        body.dark-mode {
+            background-color: #161616;
+            color: white;
+            transition: background 1.6s ease-in-out, color 1.6s ease-in-out;
         }
-    }
 
-    #img_txt {
+        .msg {
+            font-size: 70px;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(to right, red, blue);
+            color: transparent;
+            -webkit-background-clip: text;
+            text-shadow: 0 0 70px rgba(255, 0, 0, 0.457);
+            animation: msg_anime 1.6s infinite alternate;
+        }
+
+        @keyframes msg_anime {
+            100% {
+                text-shadow: 0 0 70px rgba(10, 2, 104, 0.457);
+            }
+        }
+
+        #img_txt {
             /* font-size: 70px; */
             /* font-weight: 900; */
             text-align: center;
-    }
+        }
 
-    /* Light Mode */
-    body.light-mode {
-        background-color: #f5f5f5;
-        color: black;
-        transition: background 1.6s ease-in-out, color 1.6s ease-in-out;
-    }
+        /* Light Mode */
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: black;
+            transition: background 1.6s ease-in-out, color 1.6s ease-in-out;
+        }
 
-    /* Main Button */
-    .btn {
-        margin: 100px;
-        padding: 15px 40px;
-        border: none;
-        outline: none;
-        color: #FFF;
-        cursor: pointer;
-        position: relative;
-        z-index: 0;
-        border-radius: 12px;
-    }
+        /* Main Button */
+        .btn {
+            margin-top: auto;
+            margin-right: auto;
+            margin-bottom: 22vh;
+            margin-left: auto;
+            padding: 15px 40px;
+            border: none;
+            outline: none;
+            color: #fff;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 12px;
+        }
 
-    .btn::after {
-        content: "";
-        z-index: -1;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: #333;
-        left: 0;
-        top: 0;
-        border-radius: 10px;
-    }
+        .btn::after {
+            content: "";
+            z-index: -1;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #333;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
 
-    /* Glow Effect */
-    .btn::before {
-        content: "";
-        background: linear-gradient(45deg, 
-          #FF0000, #FF7300, #FFFB00, #48FF00,
-          #00FFD5, #002BFF, #FF00C8, #FF0000
-        );
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        background-size: 600%;
-        z-index: -1;
-        width: calc(100% + 4px);
-        height:  calc(100% + 4px);
-        filter: blur(8px);
-        animation: glowing 20s linear infinite;
-        transition: opacity .3s ease-in-out;
-        border-radius: 10px;
-        opacity: 0;
-    }
+        /* Glow Effect */
+        .btn::before {
+            content: "";
+            background: linear-gradient(45deg,
+                    #ff0000,
+                    #ff7300,
+                    #fffb00,
+                    #48ff00,
+                    #00ffd5,
+                    #002bff,
+                    #ff00c8,
+                    #ff0000);
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 600%;
+            z-index: -1;
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            filter: blur(8px);
+            animation: glowing 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+            opacity: 0;
+        }
 
-    @keyframes glowing {
-        0% {background-position: 0 0;}
-        50% {background-position: 400% 0;}
-        100% {background-position: 0 0;}
-    }
+        @keyframes glowing {
+            0% {
+                background-position: 0 0;
+            }
 
-    .btn:hover::before {
-        opacity: 1;
-    }
+            50% {
+                background-position: 400% 0;
+            }
 
-    .btn:active:after {
-        background: transparent;
-    }
+            100% {
+                background-position: 0 0;
+            }
+        }
 
-    .btn:active {
-        color: #000;
-        font-weight: bold;
-    }
+        .btn:hover::before {
+            opacity: 1;
+        }
 
-    /* Centering the main button at the bottom */
-    #button {
-        position: absolute;
-        bottom: 100px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+        .btn:active:after {
+            background: transparent;
+        }
 
-    
-    .circle {
-      --circle-size: 40px;
-      position: fixed;
-      height: var(--circle-size);
-      width: var(--circle-size);
-      border: 1px solid rgb(5, 246, 190);
-      border-radius: 100%;
-      top: calc(var(--circle-size) / 2 * -1);
-      left: calc(var(--circle-size) / 2 * -1);
-      pointer-events: none;
-      z-index: 9999;
-    }
+        .btn:active {
+            color: #000;
+            font-weight: bold;
+        }
 
+        /* Centering the main button at the bottom */
+        #button {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    #bg-lights {
-      position: fixed; 
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -9999;
-      overflow: hidden;
-      opacity: 0;
-      display: none;
-      transition: opacity 1.5s ease;
-      background: transparent;
-  }
+        /* myMandala */
+        #mandala-container {
+
+            width: 270px;
+            height: 250px;
+            /* background: #111; */
+            flex: 0 0 auto;
+            /* margin: 0 auto  auto auto 20px;  */
+            margin-top: 7vh;
+            margin-right: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* border: 2px solid #fff3; /* Optional: subtle border for visibility */
+            /* box-sizing: border-box; */
+        }
+
+        .circle {
+            --circle-size: 40px;
+            position: fixed;
+            height: var(--circle-size);
+            width: var(--circle-size);
+            border: 1px solid rgb(5, 246, 190);
+            border-radius: 100%;
+            top: calc(var(--circle-size) / 2 * -1);
+            left: calc(var(--circle-size) / 2 * -1);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #bg-lights {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -9999;
+            overflow: hidden;
+            opacity: 0;
+            display: none;
+            transition: opacity 1.5s ease;
+            background: transparent;
+        }
+
+        body.dark-mode #bg-lights {
+            display: block;
+            opacity: 1;
+        }
+
+        .light-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                    rgba(255, 255, 255, 0.8) 0%,
+                    rgba(0, 0, 0, 0) 70%);
+            opacity: 0;
+            animation: floatLight 13s linear infinite;
+        }
+
+        @keyframes floatLight {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        body.light-mode {
+            background-color: #f5f5f5 !important;
+        }
+
+        body.dark-mode #bg-lights {
+            display: block;
+            opacity: 1;
+            background-color: black;
+            /* 👈 add this line */
+        }
+
+        body.light-mode #bg-lights {
+            display: none;
+            opacity: 0;
+            background-color: transparent !important;
+            /* 👈 ensures reset */
+        }
+    </style>
+    <script type="importmap">
+        {
+                  "imports": {
+                      "three": "https://cdn.jsdelivr.net/npm/three@0.161/build/three.module.js",
+            "jsm/": "https://cdn.jsdelivr.net/npm/three@0.161/examples/jsm/"
+          }
+              }
   
-  body.dark-mode #bg-lights {
-      display: block;
-      opacity: 1;
-  }
   
-  .light-dot {
-      position: absolute; 
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(0,0,0,0) 70%);
-      opacity: 0;
-      animation: floatLight 13s linear infinite;
-  }
-  
-  @keyframes floatLight {
-      0% {
-          transform: translateY(100vh) scale(0.5);
-          opacity: 0;
-      }
-      10% {
-          opacity: 0.6;
-      }
-      90% {
-          opacity: 0.4;
-      }
-      100% {
-          transform: translateY(-10vh) scale(1);
-          opacity: 0;
-      }
-  }
-  
-  body.light-mode {
-      background-color: #f5f5f5 !important;
-  }
-  body.dark-mode #bg-lights {
-      display: block;
-      opacity: 1;
-      background-color: black; /* 👈 add this line */
-  }
-  body.light-mode #bg-lights {
-      display: none;
-      opacity: 0;
-      background-color: transparent !important; /* 👈 ensures reset */
-  }
-  
-  
- </style>
-
+      </script>
 </head>
+
 <body class="dark-mode" oncontextmenu="return false">
     <div id="bg-lights"></div>
 
-   <div id="app">
-        <div id="hero">
-
-        </div>
+    <div id="app">
+        <div id="hero"></div>
     </div>
     <div class="msg">
-        <h1>Welcome </h1>
+        <h1>Welcome</h1>
     </div>
     <div id="img_txt"></div>
     <div id="img_txt2">
@@ -217,26 +266,27 @@
     </div>
     <!-- Main Button with Glow Effect -->
 
-    <div id="button"> 
+    <div id="button">
         <button class="btn">Hover Me!</button>
     </div>
 
     <!-- Toggle Button -->
 
-
     <!-- Sphere L -->
     <div id="Sphere_Container"></div>
 
+    <!-- myMandala -->
+    <div id="mandala-container"></div>
+
     <!-- Sphere R -->
     <div id="dusraSphere"></div>
-
 
     <div class="circle"></div>
 
     <!-- Sphere L -->
     <script type="module">
-        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
-
+        import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
+        
         const sphere = document.getElementById("Sphere_Container");
         Object.assign(sphere.style, {
             position: "absolute",
@@ -245,12 +295,15 @@
             width: "200px",
             height: "200px",
             zIndex: "0",
-            pointerEvents: "auto" // Enable click events
+            pointerEvents: "auto", // Enable click events
         });
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+        });
 
         renderer.setSize(200, 200);
         sphere.appendChild(renderer.domElement);
@@ -273,15 +326,18 @@
             for (let i = 1; i < shuffled.length; i++) {
                 if (shuffled[i] === shuffled[i - 1]) {
                     let swapIndex = (i + 1) % shuffled.length;
-                    [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
+                    [shuffled[i], shuffled[swapIndex]] = [
+                        shuffled[swapIndex],
+                        shuffled[i],
+                    ];
                 }
             }
             return shuffled;
         };
 
         const createTextSprite = (text) => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
             canvas.width = 128;
             canvas.height = 128;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -299,7 +355,9 @@
         const textSprites = [];
 
         const createEmojiSphere = () => {
-            const shuffledEmojis = getShuffledEmojis(emojiSets[currentEmojiSetIndex]);
+            const shuffledEmojis = getShuffledEmojis(
+                emojiSets[currentEmojiSetIndex]
+            );
             let emojiIndex = 0;
 
             for (let i = 0; i < positions.length; i += 3) {
@@ -314,7 +372,10 @@
                     emojiIndex++;
 
                     const texture = createTextSprite(emoji);
-                    const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+                    const material = new THREE.SpriteMaterial({
+                        map: texture,
+                        transparent: true,
+                    });
                     const sprite = new THREE.Sprite(material);
                     sprite.position.set(parseFloat(x), parseFloat(y), parseFloat(z));
 
@@ -328,7 +389,9 @@
 
         setInterval(() => {
             currentEmojiSetIndex = (currentEmojiSetIndex + 1) % emojiSets.length;
-            const shuffledEmojis = getShuffledEmojis(emojiSets[currentEmojiSetIndex]);
+            const shuffledEmojis = getShuffledEmojis(
+                emojiSets[currentEmojiSetIndex]
+            );
             let emojiIndex = 0;
 
             textSprites.forEach((obj) => {
@@ -352,8 +415,6 @@
 
         animate();
 
-        
-
         // Double-click on sphere to redirect
         let clickCount = 0;
         let clickTimeout;
@@ -362,9 +423,10 @@
             clickCount++;
             if (clickCount === 1) {
                 clearTimeout(clickTimeout);
-                  // window.location.href = "/hello.html";
-                  // window.location.href = "/aie-try.netlify.app/hello.html";
-                  window.location.href = "https://Kali-d-Eagle.github.io/demo/req_globe_1.html";
+                // window.location.href = "/hello.html";
+                // window.location.href = "/aie-try.netlify.app/hello.html";
+                window.location.href =
+                    "https://Kali-d-Eagle.github.io/demo/req_globe_1.html";
             } else {
                 clickTimeout = setTimeout(() => {
                     clickCount = 0;
@@ -373,72 +435,190 @@
         });
     </script>
 
-
     <!-- img_txt2 -->
-   
-<script>
-    const container = document.getElementById("img_txt");
 
-    const text = new Blotter.Text("CODEGRID", {
-        family: "serif",
-        size: 70,
-        fill: "#000",
-        paddingLeft: 100,
-        paddingRight: 80,
-        paddingTop: 40,
-        paddingBottom: 120
-    });
+    <script>
+        const container = document.getElementById("img_txt");
 
-    const material = new Blotter.ChannelSplitMaterial();
-    material.uniforms.uOffset.value = 0.05;
-    material.uniforms.uRotation.value = 50;
-    material.uniforms.uApplyBlur.value = 1;
-    material.uniforms.uAnimateNoise.value = 0.3;
+        const text = new Blotter.Text("C O D E G R I D", {
+            family: "serif",
+            size: 70,
+            fill: "#000",
+            paddingLeft: 100,
+            paddingRight: 80,
+            paddingTop: 40,
+            paddingBottom: 120,
+        });
 
-    const blotter = new Blotter(material, { texts: text });
-    const scope = blotter.forText(text);
-    scope.appendTo(container);
+        const material = new Blotter.ChannelSplitMaterial();
+        material.uniforms.uOffset.value = 0.05;
+        material.uniforms.uRotation.value = 50;
+        material.uniforms.uApplyBlur.value = 1;
+        material.uniforms.uAnimateNoise.value = 0.3;
 
-    // --- Smooth mouse movement ---
-    let targetRotation = 50;
-    let targetOffset = 0.05;
+        const blotter = new Blotter(material, { texts: text });
+        const scope = blotter.forText(text);
+        scope.appendTo(container);
 
-    let currentRotation = 50;
-    let currentOffset = 0.05;
+        // --- Smooth mouse movement ---
+        let targetRotation = 50;
+        let targetOffset = 0.05;
 
-    const maxRotation = 160;
-    const maxOffset = 0.04;
+        let currentRotation = 50;
+        let currentOffset = 0.05;
 
-    document.onmousemove = function (event) {
-        const percentX = event.clientX / window.innerWidth;
-        const percentY = event.clientY / window.innerHeight;
+        const maxRotation = 160;
+        const maxOffset = 0.04;
 
-        // Map mouse position to effect ranges
-        targetRotation = percentX * maxRotation;
-        targetOffset = percentY * maxOffset;
-    };
+        document.onmousemove = function (event) {
+            const percentX = event.clientX / window.innerWidth;
+            const percentY = event.clientY / window.innerHeight;
 
-    function animate() {
-        // Lerp toward target values
-        currentRotation += (targetRotation - currentRotation) * 0.1;
-        currentOffset += (targetOffset - currentOffset) * 0.1;
+            // Map mouse position to effect ranges
+            targetRotation = percentX * maxRotation;
+            targetOffset = percentY * maxOffset;
+        };
 
-        material.uniforms.uRotation.value = currentRotation;
-        material.uniforms.uOffset.value = currentOffset;
+        function animate() {
+            // Lerp toward target values
+            currentRotation += (targetRotation - currentRotation) * 0.1;
+            currentOffset += (targetOffset - currentOffset) * 0.1;
 
-        requestAnimationFrame(animate);
-    }
+            material.uniforms.uRotation.value = currentRotation;
+            material.uniforms.uOffset.value = currentOffset;
 
-    animate(); // start the animation loop
-</script>
+            requestAnimationFrame(animate);
+        }
+
+        animate(); // start the animation loop
+    </script>
+
+    <!-- myMandala -->
+    <script type="module">
+        import * as THREE from "three";
+        // import { OrbitControls } from 'jsm/controls/OrbitControls.js';
+        import { OrbitControls } from 'jsm/controls/OrbitControls.js';
+        import { OBJLoader } from "jsm/loaders/OBJLoader.js";
+        // import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
+        // import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
+        // import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/OBJLoader.js';
 
 
+        const mw = window.innerWidth;
+        const mh = window.innerHeight;
+        const mscene = new THREE.Scene();
+        const mcamera = new THREE.PerspectiveCamera(75, mw / mh, 0.1, 1000);
+        mcamera.position.z = 8;
+  
+        const mrenderer = new THREE.WebGLRenderer({ antialias: true });
+        mrenderer.setSize(250, 200); 
+  
+        mrenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        mrenderer.outputColorSpace = THREE.SRGBColorSpace;
+        // document.body.appendChild(renderer.domElement);
+        document.getElementById("mandala-container").appendChild(mrenderer.domElement);
+  
+        const mcontrols = new OrbitControls(mcamera, mrenderer.domElement);
+        mcontrols.enableDamping = true;
+        mcontrols.dampingFactor = 0.03;
+  
+        function initScene(data) {
+          const { geos } = data;
+          const texLoader = new THREE.TextureLoader();
+          const matcap = texLoader.load('./black-n-shiney2.jpg');
+          const startHue = Math.random() * 0.5 + 0.5;
+          function getInstanced(geometry, index) {
+            const numObjs = 8 + index * 4;
+            const step = (Math.PI * 2) / numObjs;
+            const color = new THREE.Color().setHSL(startHue + index / 10, 1.0, 0.5);
+            const material = new THREE.MeshMatcapMaterial({ matcap, color });
+            const instaMesh = new THREE.InstancedMesh(geometry, material, numObjs);
+            const matrix = new THREE.Matrix4();
+            const size = 0.5;
+            const radius = 1 + index * 0.6;
+            const z = -0.5 + index * -0.25;
+            const axis = new THREE.Vector3(0, 0, 1);
+            for (let i = 0; i < numObjs; i += 1) {
+              const x = Math.cos(step * i) * radius;
+              const y = Math.sin(step * i) * radius;
+              const position = new THREE.Vector3(x, y, z);
+              const quaternion = new THREE.Quaternion();
+              quaternion.setFromAxisAngle(axis, i * step);
+              const scale = new THREE.Vector3().setScalar(size);
+              matrix.compose(position, quaternion, scale);
+              instaMesh.setMatrixAt(i, matrix);
+            }
+            return instaMesh;
+          }
+  
+          const box = new THREE.BoxGeometry();
+          const ball = new THREE.SphereGeometry(0.66, 16, 16);
+          const knot = new THREE.TorusKnotGeometry(0.5, 0.2, 100, 16);
+          const cone = new THREE.ConeGeometry(0.5, 1, 4);
+  
+          const geoms = [box, ball, knot, cone];
+          const middles = [ball, knot];
+          const randomGeo = middles[Math.floor(Math.random() * middles.length)];
+          const numRings = 10;
+          for (let i = 0; i < numRings; i += 1) {
+            let gIndex = Math.floor(Math.random() * geoms.length);
+            const ring = getInstanced(geos[gIndex], i);
+            mscene.add(ring);
+          }
+          // add middle piece
+          const color = new THREE.Color().setHSL(startHue, 1.0, 0.5);
+          const middle = new THREE.Mesh(randomGeo, new THREE.MeshMatcapMaterial({ matcap, color }));
+          mscene.add(middle);
+  
+          function animate(t = 0) {
+            requestAnimationFrame(animate);
+            mrenderer.render(mscene, mcamera);
+            mcontrols.update();
+          }
+          animate();
+        }
+  
+        const sceneData = { geos: [] };
+        const manager = new THREE.LoadingManager();
+        manager.onLoad = () => initScene(sceneData);
+        const loader = new OBJLoader(manager);
+        const objs = [
+          'A_12',
+          'B_01',
+          'B_10',
+          'D_08',
+          'D_16',
+          'H_07',
+          'goldfish3',
+          'skull2',
+        ];
+        const path = './objs/';
+        objs.forEach((objName) => {
+          loader.load(`${path}${objName}.obj`, (obj) => {
+            obj.traverse((child) => {
+              if (child.isMesh) {
+                child.geometry.name = objName;
+                sceneData.geos.push(child.geometry);
+              }
+            });
+          });
+        });
+  
+  
+        function handleWindowResize() {
+          mcamera.aspect = window.innerWidth / window.innerHeight;
+          mcamera.updateProjectionMatrix();
+          mrenderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        window.addEventListener('resize', handleWindowResize, false);
+  
+      </script>
     <!-- Sphere R -->
     <script type="module">
-        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
+        import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
 
         const dSphere = document.getElementById("dusraSphere");
-        
+
         Object.assign(dSphere.style, {
             position: "absolute",
             bottom: "25px",
@@ -446,12 +626,20 @@
             width: "200px",
             height: "200px",
             zIndex: "0",
-            pointerEvents: "auto" // Enable click events
+            pointerEvents: "auto", // Enable click events
         });
-        
+
         const dscene = new THREE.Scene();
-        const dcamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const drenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const dcamera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        const drenderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+        });
 
         drenderer.setSize(window.innerWidth, window.innerHeight);
         // document.body.appendChild(renderer.domElement);
@@ -461,177 +649,199 @@
         dcamera.aspect = 1; // match 1:1 aspect ratio
         dcamera.updateProjectionMatrix(); // apply changes
 
-
         const dsphereGroup = new THREE.Group();
         dscene.add(dsphereGroup);
 
         const dsphereGeometry = new THREE.SphereGeometry(5, 32, 24);
-        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const wireframeMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+        });
         const wireframe = new THREE.WireframeGeometry(dsphereGeometry);
         // const lineSegments = new THREE.LineSegments(wireframe, wireframeMaterial);
         // dsphereGroup.add(lineSegments);
 
         const dcreateTextSprite = (text) => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 128;
-        canvas.height = 128;
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = 128;
+            canvas.height = 128;
 
-        ctx.font = "bold 50px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+            ctx.font = "bold 50px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
-        const texture = new THREE.CanvasTexture(canvas);
-        const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+            });
 
-        return new THREE.Sprite(material);
-    };
+            return new THREE.Sprite(material);
+        };
 
-    const emojis = ["🌟", "🔥", "💎", "🚀", "🎵", "❤️", "🌍", "⚡", "🍀", "☀️", "❄️", "🌈", "🎨", "💡", "👽", "🤖", "🎭", "💀"];
-    const getRandomEmoji = (lastEmoji) => {
-      let emoji;
-      do {
-        emoji = emojis[Math.floor(Math.random() * emojis.length)];
-      } while (emoji === lastEmoji);
-      return emoji;
-    };
+        const emojis = [
+            "🌟",
+            "🔥",
+            "💎",
+            "🚀",
+            "🎵",
+            "❤️",
+            "🌍",
+            "⚡",
+            "🍀",
+            "☀️",
+            "❄️",
+            "🌈",
+            "🎨",
+            "💡",
+            "👽",
+            "🤖",
+            "🎭",
+            "💀",
+        ];
+        const getRandomEmoji = (lastEmoji) => {
+            let emoji;
+            do {
+                emoji = emojis[Math.floor(Math.random() * emojis.length)];
+            } while (emoji === lastEmoji);
+            return emoji;
+        };
 
-    const dpositions = wireframe.attributes.position.array;
-    const duniquePositions = new Set();
-    let lastEmoji = null;
+        const dpositions = wireframe.attributes.position.array;
+        const duniquePositions = new Set();
+        let lastEmoji = null;
 
-    for (let i = 0; i < dpositions.length; i += 3) {
-      const x = dpositions[i].toFixed(2);
-      const y = dpositions[i + 1].toFixed(2);
-      const z = dpositions[i + 2].toFixed(2);
-      const key = `${x},${y},${z}`;
+        for (let i = 0; i < dpositions.length; i += 3) {
+            const x = dpositions[i].toFixed(2);
+            const y = dpositions[i + 1].toFixed(2);
+            const z = dpositions[i + 2].toFixed(2);
+            const key = `${x},${y},${z}`;
 
-      if (!duniquePositions.has(key)) {
-        duniquePositions.add(key);
-        const emoji = getRandomEmoji(lastEmoji);
-        lastEmoji = emoji;
-        const sprite = dcreateTextSprite(emoji);
-        sprite.position.set(parseFloat(x), parseFloat(y), parseFloat(z));
-        dsphereGroup.add(sprite);
-      }
-    }
-
-    dcamera.position.z = 12;
-
-    const danimate = () => {
-      requestAnimationFrame(danimate);
-      dsphereGroup.rotation.y += 0.005;
-      dsphereGroup.rotation.x += 0.0025;
-      drenderer.render(dscene, dcamera);
-    };
-
-
-    window.addEventListener('resize', () => {
-      dcamera.aspect = window.innerWidth / window.innerHeight;
-      dcamera.updateProjectionMatrix();
-      drenderer.setSize(window.innerWidth, window.innerHeight);
-    });
-    danimate();
-    // Double-click on sphere to redirect
-    let dclickCount = 0;
-    let dclickTimeout;
-
-    dSphere.addEventListener("click", () => {
-        dclickCount++;
-        if (dclickCount === 1) {
-            clearTimeout(dclickTimeout);
-              // window.location.href = "/hello.html";
-              // window.location.href = "/aie-try.netlify.app/hello.html";
-              window.location.href = "https://Kali-d-Eagle.github.io/demo/req_globe_2.html";
-        } else {
-            dclickTimeout = setTimeout(() => {
-                dclickCount = 0;
-            }, 400);
+            if (!duniquePositions.has(key)) {
+                duniquePositions.add(key);
+                const emoji = getRandomEmoji(lastEmoji);
+                lastEmoji = emoji;
+                const sprite = dcreateTextSprite(emoji);
+                sprite.position.set(parseFloat(x), parseFloat(y), parseFloat(z));
+                dsphereGroup.add(sprite);
+            }
         }
-    });
+
+        dcamera.position.z = 12;
+
+        const danimate = () => {
+            requestAnimationFrame(danimate);
+            dsphereGroup.rotation.y += 0.005;
+            dsphereGroup.rotation.x += 0.0025;
+            drenderer.render(dscene, dcamera);
+        };
+
+        window.addEventListener("resize", () => {
+            dcamera.aspect = window.innerWidth / window.innerHeight;
+            dcamera.updateProjectionMatrix();
+            drenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        danimate();
+        // Double-click on sphere to redirect
+        let dclickCount = 0;
+        let dclickTimeout;
+
+        dSphere.addEventListener("click", () => {
+            dclickCount++;
+            if (dclickCount === 1) {
+                clearTimeout(dclickTimeout);
+                // window.location.href = "/hello.html";
+                // window.location.href = "/aie-try.netlify.app/hello.html";
+                window.location.href =
+                    "https://Kali-d-Eagle.github.io/demo/req_globe_2.html";
+            } else {
+                dclickTimeout = setTimeout(() => {
+                    dclickCount = 0;
+                }, 400);
+            }
+        });
     </script>
 
-   
-
-
-   <script>
-        const circleElement = document.querySelector('.circle');
+    <script>
+        const circleElement = document.querySelector(".circle");
         const mouse = { x: 0, y: 0 };
         const previousMouse = { x: 0, y: 0 };
         const circle = { x: 0, y: 0 };
-  
+
         let currentScale = 0;
         let currentAngle = 0;
-  
-        window.addEventListener('mousemove', (e) => {
-          mouse.x = e.x;
-          mouse.y = e.y;
+
+        window.addEventListener("mousemove", (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
         });
-  
+
         const speed = 0.15;
-  
+
         const tick = () => {
-          circle.x += (mouse.x - circle.x) * speed;
-          circle.y += (mouse.y - circle.y) * speed;
-          const translateTransform = `translate(${circle.x}px, ${circle.y}px)`;
-  
-          const deltaMouseX = mouse.x - previousMouse.x;
-          const deltaMouseY = mouse.y - previousMouse.y;
-          previousMouse.x = mouse.x;
-          previousMouse.y = mouse.y;
-  
-          const mouseVelocity = Math.min(Math.sqrt(deltaMouseX**2 + deltaMouseY**2) * 4, 150);
-          const scaleValue = (mouseVelocity / 150) * 0.5;
-          currentScale += (scaleValue - currentScale) * speed;
-          const scaleTransform = `scale(${1 + currentScale}, ${1 - currentScale})`;
-  
-          const angle = Math.atan2(deltaMouseY, deltaMouseX) * 180 / Math.PI;
-          if (mouseVelocity > 20) {
-            currentAngle = angle;
-          }
-          const rotateTransform = `rotate(${currentAngle}deg)`;
+            circle.x += (mouse.x - circle.x) * speed;
+            circle.y += (mouse.y - circle.y) * speed;
+            const translateTransform = `translate(${circle.x}px, ${circle.y}px)`;
 
-           // --- ✨ Dynamic Border Styling --- //
+            const deltaMouseX = mouse.x - previousMouse.x;
+            const deltaMouseY = mouse.y - previousMouse.y;
+            previousMouse.x = mouse.x;
+            previousMouse.y = mouse.y;
 
-          // Speed-based border thickness (1px to 6px)
-          const dynamicBorder = 1 + (mouseVelocity / 150) * 5; 
-          circleElement.style["border-width"] = `${dynamicBorder}px`;
+            const mouseVelocity = Math.min(
+                Math.sqrt(deltaMouseX ** 2 + deltaMouseY ** 2) * 4,
+                150
+            );
+            const scaleValue = (mouseVelocity / 150) * 0.5;
+            currentScale += (scaleValue - currentScale) * speed;
+            const scaleTransform = `scale(${1 + currentScale}, ${1 - currentScale
+                })`;
 
-          // Angle-based border color (Hue shifts with direction)
-          const hue = (currentAngle + 360) % 360; // Normalize to 0-360
-          circleElement.style["border-color"] = `hsl(${hue}, 100%, 50%)`;
-  
-          circleElement.style.transform = `${translateTransform} ${rotateTransform} ${scaleTransform}`;
-          window.requestAnimationFrame(tick);
+            const angle = (Math.atan2(deltaMouseY, deltaMouseX) * 180) / Math.PI;
+            if (mouseVelocity > 20) {
+                currentAngle = angle;
+            }
+            const rotateTransform = `rotate(${currentAngle}deg)`;
+
+            // --- ✨ Dynamic Border Styling --- //
+
+            // Speed-based border thickness (1px to 6px)
+            const dynamicBorder = 1 + (mouseVelocity / 150) * 5;
+            circleElement.style["border-width"] = `${dynamicBorder}px`;
+
+            // Angle-based border color (Hue shifts with direction)
+            const hue = (currentAngle + 360) % 360; // Normalize to 0-360
+            circleElement.style["border-color"] = `hsl(${hue}, 100%, 50%)`;
+
+            circleElement.style.transform = `${translateTransform} ${rotateTransform} ${scaleTransform}`;
+            window.requestAnimationFrame(tick);
         };
-  
-        tick();
-      </script>
 
-      <script>
-        
+        tick();
+    </script>
+
+    <script>
         const bgLights = document.getElementById("bg-lights");
         const totalLights = 400;
-    
+
         for (let i = 0; i < totalLights; i++) {
-          const dot = document.createElement("div");
-          dot.classList.add("light-dot");
-          dot.style.left = `${Math.random() * 100}vw`;
-          dot.style.animationDuration = `${7 + Math.random() * 13}s`;
-          dot.style.animationDelay = `${Math.random() * 16}s`;
+            const dot = document.createElement("div");
+            dot.classList.add("light-dot");
+            dot.style.left = `${Math.random() * 100}vw`;
+            dot.style.animationDuration = `${7 + Math.random() * 13}s`;
+            dot.style.animationDelay = `${Math.random() * 16}s`;
 
-          const hue = Math.floor(Math.random() * 360);
-          const saturation = Math.floor(60 + Math.random() * 40); // 60% - 100%
-          const lightness = Math.floor(60 + Math.random() * 20);  // 60% - 80%
+            const hue = Math.floor(Math.random() * 360);
+            const saturation = Math.floor(60 + Math.random() * 40); // 60% - 100%
+            const lightness = Math.floor(60 + Math.random() * 20); // 60% - 80%
 
-          dot.style.background = `radial-gradient(circle, hsl(${hue}, ${saturation}%, ${lightness}%) 0%, rgba(0, 0, 0, 0) 70%)`;
-          dot.style.boxShadow = `0 0 10px hsl(${hue}, ${saturation}%, ${lightness}%)`;
-          bgLights.appendChild(dot);
+            dot.style.background = `radial-gradient(circle, hsl(${hue}, ${saturation}%, ${lightness}%) 0%, rgba(0, 0, 0, 0) 70%)`;
+            dot.style.boxShadow = `0 0 10px hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            bgLights.appendChild(dot);
         }
-
-    
-      </script>
-      
+    </script>
 </body>
+
 </html>
+
