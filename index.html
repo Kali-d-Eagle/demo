@@ -286,7 +286,7 @@
     <!-- Sphere L -->
     <script type="module">
         import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
-
+        
         const sphere = document.getElementById("Sphere_Container");
         Object.assign(sphere.style, {
             position: "absolute",
@@ -497,9 +497,10 @@
     <script type="module">
         import * as THREE from "three";
         // import { OrbitControls } from 'jsm/controls/OrbitControls.js';
-        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-        import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+        // import { OrbitControls } from './jsm/controls/OrbitControls.js';
+        // import { OBJLoader } from "./jsm/loaders/OBJLoader.js";
+        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js';
+        import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/OBJLoader.js';
 
 
         const mw = window.innerWidth;
